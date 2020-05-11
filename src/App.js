@@ -10,8 +10,8 @@ export default class App extends Component{
          userName: "sam",
          todoItems: [
            {"item": "Todo Item1", "done": false},
-           {"item": "Todo Item1", "done": false},
-           {"item": "Todo Item1", "done": false},
+           {"item": "Todo Item2", "done": false},
+           {"item": "Todo Item3", "done": false},
          ], 
       }
     }
@@ -61,22 +61,22 @@ export default class App extends Component{
       <div className="card">
         <div className="container">
           <TodoCreator callback={this.updateTodoItem} />
-          <div className="row p-1">
-            <div className="col-1">
-              <div class="position-absolute input-group-text w-100 h-100">
-              {/* <input type="checkbox" aria-label="Checkbox for following text input" /> */}
+          <div className="p-1" style={{display:'flex', flexDirection:'row'}}>
+            <div style={{flex:'1'}}>
+                <div class="input-group-text h-100">
+                  {/* <input type="checkbox" aria-label="Checkbox for following text input" />  */}
+                </div>
+              </div>
+              <div className="bg-primary text-center text-white" style={{flex:'8'}}>
+                    <b>TODO ITEM</b>
+              </div>
+              <div className=""  style={{flex:'1',paddingLeft:'0px'}}>
+                <div class="input-group-text h-100" >
+                  {/* <input type="checkbox" aria-label="Checkbox for following text input" /> */}
+                </div>
               </div>
             </div>
-            <div className="col-10 bg-primary text-white text-center p-1">
-                  <b>TODO ITEM</b>
-            </div>
-            <div className="col-1"  style={{paddingLeft:'0px'}}>
-              <div class="position-absolute input-group-text w-100 h-100" >
-                {/* <input type="checkbox" aria-label="Checkbox for following text input" /> */}
-              </div>
-            </div>
-          </div> 
-          <TodoList items={this.state.todoItems} callback={this.toggleItem} completed="false" nextaction="done"/>
+            <TodoList items={this.state.todoItems} callback={this.toggleItem} completed="false" nextaction="done"/>
           
         </div>
       </div>
@@ -84,6 +84,21 @@ export default class App extends Component{
       <div className="col-6 border">
         <div className="card">
           <div className="container">
+           <div className="p-1" style={{display:'flex', flexDirection:'row'}}>
+             <div style={{flex:'1'}}>
+                 <div class="input-group-text h-100">
+                   {/* <input type="checkbox" aria-label="Checkbox for following text input" />  */}
+                </div>
+              </div>
+              <div className="bg-primary text-center text-white" style={{flex:'8'}}>
+                    <b>COMPLETED ITEM</b>
+              </div>
+              <div className=""  style={{flex:'1',paddingLeft:'0px'}}>
+                <div class="input-group-text h-100" >
+                  {/* <input type="checkbox" aria-label="Checkbox for following text input" /> */}
+                </div>
+              </div>
+            </div>
             <TodoList items={this.state.todoItems} callback={this.toggleDelete} completed="true" nextaction="delete"/>
             
           </div>
