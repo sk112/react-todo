@@ -1,3 +1,10 @@
+/**
+ * FIXME:
+ * 
+ * Handle Duplicate data.
+ */
+
+
 import React, {Component} from 'react';
 import './App.css';
 import { Header } from './Header';
@@ -33,7 +40,7 @@ export default class App extends Component{
     }
 
     updateTodoItem = (newItem) => {
-      if(newItem != '' && this.state.todoItems.filter(item => item.name == newItem).length == 0){
+      if(newItem != '' && this.state.todoItems.filter(item => item.item == newItem).length == 0){
         this.setState({todoItems: [...this.state.todoItems, {"item": newItem, "done": false}]}, () => localStorage.setItem("todos", JSON.stringify(this.state)))
       }
     }
@@ -60,7 +67,7 @@ export default class App extends Component{
       <div className="col-6">
       <div className="card">
         <div className="container">
-          <TodoCreator callback={this.updateTodoItem} />
+          <TodoCreator callback={this.updateTodoItem} items={this.state.todoItems}/>
           <div className="p-1" style={{display:'flex', flexDirection:'row'}}>
             <div style={{flex:'1'}}>
                 <div class="input-group-text h-100">

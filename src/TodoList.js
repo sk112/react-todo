@@ -2,9 +2,7 @@ import React from 'react';
 import styled from 'styled-components'
 
 /**
- * FIXME:
  * 
- * Todo Item list ambiguity.. Additional data on GUI.
  */
 
 export default class TodoList extends React.Component{
