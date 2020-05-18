@@ -23,7 +23,7 @@ export class TodoCreator extends Component{
         if(e.key === 'Enter'){
             e.preventDefault();
 
-            if(e.target.value != '' && this.props.items.filter(item => item.item == e.target.value).length == 0){
+            if(e.target.value != '' && this.props.items.filter(item => item.item == e.target.value && item.done === true).length == 0){
                 this.props.callback(e.target.value);
                 this.inputTextRef.current.value = '';
                 this.inputTextRef.current.focus();

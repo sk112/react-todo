@@ -1,11 +1,11 @@
-import React from 'react';
-import styled from 'styled-components'
+import React, { Component } from 'react';
+import styled from 'styled-components';
 
 /**
  * 
  */
 
-export default class TodoList extends React.Component{
+export default class TodoList extends Component{
     Button = styled.button`
         display: block;
         box-sizing: border-box;

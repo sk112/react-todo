@@ -13,51 +13,91 @@ import { TodoCreator } from './TodoCreator';
 export default class App extends Component{
     constructor(props){
       super(props);
-      this.state = {
-         userName: "sam",
-         todoItems: [
-           {"item": "Todo Item1", "done": false},
-           {"item": "Todo Item2", "done": false},
-           {"item": "Todo Item3", "done": false},
-         ], 
-      }
+       this.state = {
+         userName: 'sam',
+         todoItems: []
+
+       }
+
+       let that = this;
+       fetch("http://localhost:8000/api/task-list/").then(response => response.json()).then(data => {
+       that.state = {
+         userName: 'sam',
+         todoItems: [...data]
+       }
+      })
+
     }
 
     componentDidMount = () => {
-        let data = localStorage.getItem("todos");
-
-        this.setState( data != null 
-          ?  JSON.parse(data)
-          : {
-            userName: "sam",
-            todoItems: [
-              {"item": "Todo Item1", "done": false},
-              {"item": "Todo Item2", "done": false},
-              {"item": "Todo Item3", "done": false},
-            ], 
-         }
-        )
+        
+        let that = this;
+        fetch("http://localhost:8000/api/task-list/").then(response => response.json()).then(data => {
+        console.log(data)
+          that.setState({
+            todoItems: [...data] 
+          }) 
+        })
     }
 
     updateTodoItem = (newItem) => {
       if(newItem != '' && this.state.todoItems.filter(item => item.item == newItem).length == 0){
-        this.setState({todoItems: [...this.state.todoItems, {"item": newItem, "done": false}]}, () => localStorage.setItem("todos", JSON.stringify(this.state)))
+
+        let that = this;
+        fetch("http://localhost:8000/api/task-create/", {
+          method: "POST",
+           body: JSON.stringify({
+            "item": newItem,
+            "done": false
+           }),
+           headers: { 
+             "Content-Type": "application/json" 
+           }
+      }).then(res => res.json())
+        .then(data => {
+          console.log(data)
+          that.setState({
+            todoItems: [...this.state.todoItems, data]
+          })
+        })
       }
     }
 
     toggleItem = (toggledItem) => {
+
       this.setState(
         {
           todoItems: this.state.todoItems.map(item => item.item == toggledItem ? {...item, done: !item.done} : item)
-        },() => localStorage.setItem("todos", JSON.stringify(this.state))
-      )
+        },() => {
+          fetch("http://localhost:8000/api/task-update/", {
+            method: "POST",
+            body: JSON.stringify({
+              "item": toggledItem,
+              "done": true
+            }),
+            headers: { 
+             "Content-Type": "application/json" 
+           }
+          }).then(res => res.json()).then(data => console.log(data)) 
+        })
+      
     }
 
 
     toggleDelete = (deleteItem) => {
       this.setState({
         todoItems: this.state.todoItems.filter(item => item.item != deleteItem)
-      }, () => localStorage.setItem("todos", JSON.stringify(this.state)))
+      }, () => {
+        fetch("http://localhost:8000/api/task-delete/", {
+          method: "DELETE",
+          body: JSON.stringify({
+            "item": deleteItem,
+          }),
+          headers: { 
+            "Content-Type": "application/json" 
+          }
+        }).then(res => res.json()).then(data => console.log(data)) 
+      })
     }
 
     render = () =>

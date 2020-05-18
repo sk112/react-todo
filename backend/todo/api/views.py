@@ -3,6 +3,7 @@ from rest_framework.response import Response
 
 from .serializers import TaskSerializer
 from .models import Task
+import json
 
 # Create your views here.
 
@@ -31,7 +32,7 @@ def taskList(request):
 # Get Detail task View
 @api_view(['GET'])
 def taskDetail(request, pk):
-    task = Task.objects.get(id=pk)
+    task = Task.objects.get(item=pk)
     serializer = TaskSerializer(task, many=False)
     return Response(serializer.data)
 
@@ -39,8 +40,9 @@ def taskDetail(request, pk):
 # Create task 
 @api_view(['POST'])
 def taskCreate(request):
+    print(request.data)
     serializer = TaskSerializer(data=request.data)
-
+    
     if serializer.is_valid():
         serializer.save()
 
@@ -49,8 +51,14 @@ def taskCreate(request):
 
 # Update task 
 @api_view(['POST'])
-def taskUpdate(request, pk):
-    task = Task.objects.get(id=pk)
+def taskUpdate(request):
+
+    body_unicode = request.body.decode('utf-8')
+    body = json.loads(body_unicode)
+    content = body['item']
+    
+    print(content, 'sasas')
+    task = Task.objects.get(item=content)
     serializer = TaskSerializer(instance=task, data=request.data)
 
     if serializer.is_valid():
@@ -61,8 +69,14 @@ def taskUpdate(request, pk):
 
 # Delete task 
 @api_view(['DELETE'])
-def taskDelete(request, pk):
-    task = Task.objects.get(id=pk)
+def taskDelete(request):
+    
+    body_unicode = request.body.decode('utf-8')
+    body = json.loads(body_unicode)
+    content = body['item']
+    
+    print(content, 'sasas')
+    task = Task.objects.get(item=content)
     task.delete()
 
     return Response("Item deleted")
